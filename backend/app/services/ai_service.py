@@ -29,40 +29,41 @@ def plan_user_query(conversation_messages: list[dict]) -> dict:
     today_str = date.today().isoformat()
 
     planner_prompt = f"""
-You are a finance query parser for a chat application.
+    You are a finance query parser for a chat application.
 
-Today's date is {today_str}.
+    Today's date is {today_str}.
 
-You will be given the recent conversation history.
-Your task is to analyze the conversation, paying special attention to the latest user message.
+    You will be given the recent conversation history.
+    Your task is to analyze the conversation, paying special attention to the latest user message.
 
-Return only valid JSON.
+    Return only valid JSON.
 
-Output format:
-{{
-  "intent": "finance_query" | "casual" | "unsupported",
-  "asset": "bitcoin" | "ethereum" | "solana" | null,
-  "start_date": "YYYY-MM-DD" | null,
-  "end_date": "YYYY-MM-DD" | null,
-  "needs_current_price": boolean,
-  "needs_chart": boolean
-}}
+    Output format:
+    {{
+    "intent": "finance_query" | "casual" | "unsupported",
+    "asset": "string | null",
+    "start_date": "YYYY-MM-DD" | null,
+    "end_date": "YYYY-MM-DD" | null,
+    "needs_current_price": boolean,
+    "needs_chart": boolean
+    }}
 
-Rules:
-- Use the latest user message as the main request.
-- If the latest user message omits the asset but clearly refers to the asset discussed earlier in the conversation, infer the asset from recent context.
-- If the user is greeting, making small talk, or asking a non-finance conversational question, use "casual".
-- If the user asks about supported crypto assets and wants current price, trend, movement, or chart-related information, use "finance_query".
-- If the request is outside supported capabilities, use "unsupported".
-- Supported assets are bitcoin, ethereum, and solana.
-- Map BTC to bitcoin, ETH to ethereum, SOL to solana.
-- Resolve natural language date references into explicit dates in YYYY-MM-DD format.
-- If the user asks for a month like February, resolve it into start_date and end_date for that month.
-- If the user asks for a relative range like last 200 days, compute explicit start_date and end_date.
-- If no timeframe is provided and a trend/chart is requested, default to the last 7 days.
-- If only current price is requested, start_date and end_date may be null.
-- Return JSON only. No markdown. No explanation.
-""".strip()
+    Rules:
+    - Use the latest user message as the main request.
+    - If the latest user message omits the asset but clearly refers to the asset discussed earlier in the conversation, infer the asset from recent context.
+    - If the user is greeting, making small talk, or asking a non-finance conversational question, use "casual".
+    - If the user asks about crypto assets and wants current price, trend, movement, or chart-related information, use "finance_query".
+    - If the request is outside supported capabilities, use "unsupported".
+    - Extract the crypto asset the user refers to as a lowercase string when possible.
+    - Map common shorthand like BTC -> bitcoin, ETH -> ethereum, SOL -> solana, DOGE -> dogecoin when possible.
+    - If the user refers to a crypto asset but the exact provider-specific ID is unclear, still return the most likely lowercase asset name.
+    - Resolve natural language date references into explicit dates in YYYY-MM-DD format.
+    - If the user asks for a month like February, resolve it into start_date and end_date for that month.
+    - If the user asks for a relative range like last 200 days, compute explicit start_date and end_date.
+    - If no timeframe is provided and a trend/chart is requested, default to the last 7 days.
+    - If only current price is requested, start_date and end_date may be null.
+    - Return JSON only. No markdown. No explanation.
+    """.strip()
 
     messages = [{"role": "system", "content": planner_prompt}]
     messages.extend(conversation_messages[-6:])

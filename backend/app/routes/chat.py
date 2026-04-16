@@ -9,7 +9,7 @@ from app.schemas.chat import (
     PlannerOutput,
 )
 from app.services.finance_service import (
-    SUPPORTED_ASSETS,
+    resolve_asset_id,
     fetch_current_price,
     fetch_chart,
 )
@@ -30,7 +30,8 @@ router = APIRouter(prefix="/chat", tags=["chat"])
 def fallback_reply() -> str:
     return (
         "I can help with crypto questions like current price, recent movement, "
-        "monthly or custom timeframe trends for supported assets such as BTC, ETH, and SOL."
+        "and custom timeframe trends for many crypto assets. "
+        "If needed, please mention the asset more explicitly."
     )
 
 
@@ -63,13 +64,18 @@ def chat_endpoint(payload: ChatRequest):
         if planner.intent != "finance_query":
             return ChatResponse(reply=fallback_reply(), chart=None)
 
-        if not planner.asset or planner.asset not in SUPPORTED_ASSETS:
-            return ChatResponse(reply=fallback_reply(), chart=None)
+        resolved_asset_id = resolve_asset_id(planner.asset)
+
+        if not resolved_asset_id:
+            return ChatResponse(
+                reply="I couldn't confidently identify the crypto asset in your request. Please mention the asset more explicitly, for example Bitcoin, Ethereum, Solana, Dogecoin, or XRP.",
+                chart=None,
+            )
 
         current_price = None
         chart = None
         market_context_parts = [
-            f"Asset: {planner.asset}",
+            f"Resolved asset ID: {resolved_asset_id}",
         ]
 
         normalized_start_date, normalized_end_date, timeframe_status = normalize_timeframe(
@@ -78,7 +84,7 @@ def chat_endpoint(payload: ChatRequest):
         )
 
         if planner.needs_current_price:
-            current_price = fetch_current_price(planner.asset)
+            current_price = fetch_current_price(resolved_asset_id)
             market_context_parts.append(f"Current price: ${current_price} USD")
 
         if planner.needs_chart:
@@ -87,7 +93,7 @@ def chat_endpoint(payload: ChatRequest):
 
             days = calculate_days_for_range(normalized_start_date, normalized_end_date)
 
-            chart_points_raw = fetch_chart(planner.asset, days)
+            chart_points_raw = fetch_chart(resolved_asset_id, days)
 
             chart_summary = build_chart_summary(chart_points_raw)
 
@@ -129,7 +135,7 @@ def chat_endpoint(payload: ChatRequest):
                 )
 
             chart = ChartData(
-                label=f"{planner.asset.upper()} {normalized_start_date.isoformat()} to {normalized_end_date.isoformat()}",
+                label=f"{resolved_asset_id.upper()} {normalized_start_date.isoformat()} to {normalized_end_date.isoformat()}",
                 points=[
                     ChartPoint(time=point["time"], price=point["price"])
                     for point in chart_points_raw
@@ -137,7 +143,7 @@ def chat_endpoint(payload: ChatRequest):
             )
 
         if not planner.needs_current_price and not planner.needs_chart:
-            current_price = fetch_current_price(planner.asset)
+            current_price = fetch_current_price(resolved_asset_id)
             market_context_parts.append(f"Current price: ${current_price} USD")
 
         market_context = "\n".join(market_context_parts)
