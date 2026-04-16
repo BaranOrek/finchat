@@ -79,3 +79,48 @@ AI: Ethereum increased by...
 git clone https://github.com/your-username/finchat.git
 cd finchat
 ```
+
+### 2. Backend Setup
+
+```
+cd backend
+pip install -r requirements.txt
+```
+
+Create a .env file:
+
+```
+AI_API_KEY=your_openai_key
+AI_BASE_URL=https://api.openai.com/v1
+AI_MODEL=gpt-4o-mini
+
+COINGECKO_BASE_URL=https://api.coingecko.com/api/v3
+COINGECKO_DEMO_API_KEY=your_coingecko_key
+```
+
+Run the backend:
+
+```
+uvicorn app.main:app --reload
+```
+
+### 3. Frontend Setup
+
+```
+cd frontend
+npm install
+```
+
+Create a .env file:
+
+```
+VITE_API_BASE_URL=http://localhost:8000
+```
+
+Run the frontend:
+
+```
+npm run dev
+```
+
+### 🐳 Docker (Optional)
