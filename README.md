@@ -136,6 +136,15 @@ docker-compose up --build
 
 ---
 
+## 🔗 Live Demo
+
+- Frontend (Vercel): https://finchat-tan.vercel.app 
+- Backend (Render): https://finchat-4o0r.onrender.com  
+
+You can directly interact with the application using the frontend, or test the backend via API tools like curl or Postman.
+
+---
+
 ## ⚠️ Limitations
 
 - Historical analysis is currently limited to the most recent 365 days.
