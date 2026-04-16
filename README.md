@@ -1,143 +1,81 @@
-# 📊 FinChat – AI-Powered Crypto Assistant
+# 💬 FinChat – AI-Powered Crypto Assistant
 
-FinChat is a full-stack AI-powered chatbot that provides real-time cryptocurrency insights, including current prices and historical performance with interactive charts.
+FinChat is an AI-powered chat application that provides real-time cryptocurrency insights, including current prices, historical trends, and chart-based analysis.
+
+The system combines natural language understanding with live market data to deliver an intuitive conversational experience.
 
 ---
 
 ## 🚀 Features
 
-* 💬 Conversational crypto assistant (ChatGPT-style interface)
-* 📈 Real-time price tracking (BTC, ETH, SOL)
-* 📊 Historical performance analysis with charts
-* 🧠 Intelligent query planning (intent + asset + timeframe detection)
-* ⚡ FastAPI backend with structured responses
-* 🌐 Deployed frontend and backend (cloud-ready)
+- 💰 Real-time crypto prices (Bitcoin, Ethereum, Dogecoin, etc.)
+- 📊 Interactive price charts for custom timeframes
+- 🧠 Context-aware conversation (follow-up questions supported)
+- 🗓️ Natural language date parsing (e.g. "last month", "February")
+- 🔍 Dynamic asset resolution (no strict predefined list required)
+- ⚡ AI-powered responses using structured market data
+- 🧩 Graceful handling of edge cases (future dates, long ranges, unknown assets)
 
 ---
 
-## 🏗️ Tech Stack
+## 🏗️ Architecture
 
-### Backend
+### Backend (FastAPI)
+- AI query planning layer
+- Market data integration (CoinGecko API)
+- Timeframe normalization
+- Chart summarization logic
 
-* Python + FastAPI
-* OpenAI API (for natural language understanding & responses)
-* CoinGecko API (market data)
-* Pydantic (schema validation)
-
-### Frontend
-
-* React + TypeScript
-* Vite
-* Chart visualization (custom chart rendering)
-
-### Deployment
-
-* Backend: Render
-* Frontend: Vercel
-* Dockerized for portability
+### Frontend (React + Vite)
+- Chat UI
+- Chart visualization
+- Responsive layout
 
 ---
 
 ## 🧠 How It Works
 
-1. User sends a message (e.g. *"How has Bitcoin moved over the last month?"*)
-2. Backend uses an AI planner to extract:
-
-   * Intent (finance / casual)
-   * Asset (BTC, ETH, etc.)
-   * Timeframe
-3. Market data is fetched from CoinGecko
-4. A structured **market context** is built
-5. AI generates a natural language response
-6. Chart data is returned to frontend
+1. User sends a message  
+2. AI planner extracts:
+   - intent  
+   - asset  
+   - timeframe  
+3. Backend fetches:
+   - current price  
+   - historical chart data  
+4. Chart summary is generated  
+5. AI produces a final response using structured data  
 
 ---
 
 ## 📊 Example Queries
 
-* `What is the current price of BTC?`
-* `How has Ethereum performed over the last month?`
-* `Show me Solana in February`
-* `What happened to Bitcoin in the last year?`
+What is the current price of Bitcoin?
+How has it changed over the last week?
+Show me Ethereum performance in February
+What about last month?
+price of doge
 
 ---
 
-## ⚙️ Environment Variables
+## 🧪 Demo Conversation
 
-### Backend
+User: What is the current price of BTC?
+AI: The current price of Bitcoin is $74,990 USD.
 
-```env
-OPENAI_API_KEY=your_openai_key
-COINGECKO_DEMO_API_KEY=your_coingecko_key
-COINGECKO_BASE_URL=https://api.coingecko.com/api/v3
-```
+User: How has it changed over the last 10 days?
+AI: Bitcoin increased by 8.31% over the last 10 days...
 
-### Frontend
-
-```env
-VITE_API_BASE_URL=https://your-backend-url.onrender.com
-```
+User: What about ETH?
+AI: Ethereum increased by...
 
 ---
 
-## 🐳 Docker Setup
+## ⚙️ Setup Instructions
 
-Run the full stack locally:
+### 1. Clone the repository
 
 ```bash
-docker-compose up --build
+git clone https://github.com/your-username/finchat.git
+cd finchat
 ```
-
-* Backend → http://localhost:8000
-* Frontend → http://localhost:5173
-
----
-
-## ⚠️ Notes on Rate Limiting
-
-CoinGecko public API has strict rate limits.
-To improve reliability:
-
-* Demo API key is used
-* Lightweight server-side caching can be applied (optional improvement)
-
----
-
-## 📦 Project Structure
-
-```
-finchat/
-├── backend/
-│   ├── app/
-│   │   ├── routes/
-│   │   ├── services/
-│   │   ├── schemas/
-│   │   └── core/
-│   └── Dockerfile
-│
-├── frontend/
-│   ├── src/
-│   └── Dockerfile
-│
-└── docker-compose.yml
-```
-
----
-
-## ✨ Future Improvements
-
-* Persistent chat history (context-aware conversations)
-* Advanced charting (zoom, multi-asset comparison)
-* Portfolio tracking
-* WebSocket streaming for live price updates
-
----
-
-## 🌐 Live Demo
-
-- Frontend: https://finchat-tan.vercel.app
-- Backend: https://finchat-4o0r.onrender.com
-
-## 👤 Author
-
-Baran Örek
