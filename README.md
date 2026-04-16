@@ -124,3 +124,52 @@ npm run dev
 ```
 
 ### 🐳 Docker (Optional)
+
+```
+docker-compose up --build
+```
+
+### 🌐 Deployment
+
+- Backend: Render
+- Frontend: Vercel
+
+---
+
+## ⚠️ Limitations
+
+- Historical analysis is currently limited to the most recent 365 days.
+- External market data depends on CoinGecko API availability and rate limits.
+- Multi-asset comparison support is currently partial and not fully charted side by side.
+
+---
+
+## 🔮 Future Improvements
+
+- Add structured logging and better observability across planner, market data, and response-generation layers.
+- Improve code documentation and docstring coverage in line with Python style and documentation guidelines.
+- Replace localStorage-based chat persistence with a user-based backend architecture backed by a database.
+- Further improve the planner layer so it can resolve more coin references and ambiguous follow-up questions more reliably.
+- Remove the current 365-day historical limit by supporting broader date ranges with stronger validation and provider-side optimizations.
+- Add richer chart interactions such as zooming, comparison views, and better timeframe controls.
+- Introduce stronger caching and fallback strategies for external market-data rate limits.
+- Improve asset disambiguation when multiple assets match the same user query.
+
+---
+
+## 📌 Tech Stack
+
+- FastAPI (Python)
+- React + Vite
+- TypeScript
+- OpenAI API
+- CoinGecko API
+- Docker
+- Render
+- Vercel
+
+---
+
+## 👨‍💻 Author
+
+Baran Örek
