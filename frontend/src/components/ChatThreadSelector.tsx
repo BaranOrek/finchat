@@ -1,10 +1,5 @@
 import { Box, Text, Select, createListCollection } from "@chakra-ui/react";
 
-type ThreadOption = {
-  label: string;
-  value: string;
-};
-
 type Props = {
   threads: { id: string; title: string }[];
   activeThreadId: string | null;
