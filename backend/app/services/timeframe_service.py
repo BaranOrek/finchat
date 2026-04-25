@@ -45,6 +45,12 @@ def normalize_timeframe(
     if start_date > end_date:
         return None, None, "invalid_range"
 
+    # If the whole requested period is older than our supported range,
+    # analyze the most recent supported 365-day window instead.
+    if end_date < earliest_allowed:
+        return earliest_allowed, today, "clamped_to_365_days"
+
+    # If only the start date is too old, clamp it but keep the user's end date.
     if start_date < earliest_allowed:
         start_date = earliest_allowed
         status = "clamped_to_365_days"
@@ -53,6 +59,5 @@ def normalize_timeframe(
 
 
 def calculate_days_for_range(start_date: date, end_date: date) -> int:
-    # CoinGecko days param için en az 1 gün dönelim
     delta_days = (end_date - start_date).days
     return max(delta_days, 1)

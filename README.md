@@ -1,73 +1,120 @@
 # 💬 FinChat – AI-Powered Crypto Assistant
 
-FinChat is an AI-powered chat application that provides real-time cryptocurrency insights, including current prices, historical trends, and chart-based analysis.
+FinChat is an AI-powered crypto assistant that turns natural language questions into real market insights.
 
-The system combines natural language understanding with live market data to deliver an intuitive conversational experience.
+Instead of returning raw numbers, it understands user intent and provides **clear explanations, comparisons, and performance analysis** based on live market data.
+
 
 ---
 
-## 🚀 Features
+## ✨ Key Features
 
-- 💰 Real-time crypto prices (Bitcoin, Ethereum, Dogecoin, etc.)
-- 📊 Interactive price charts for custom timeframes
-- 🧠 Context-aware conversation (follow-up questions supported)
-- 🗓️ Natural language date parsing (e.g. "last month", "February")
-- 🔍 Dynamic asset resolution (no strict predefined list required)
-- ⚡ AI-powered responses using structured market data
-- 🧩 Graceful handling of edge cases (future dates, long ranges, unknown assets)
+- 💰 **Real-time crypto prices** (BTC, ETH, SOL, DOGE, XRP, etc.)
+- 📊 **Interactive charts** for recent market performance
+- 🔍 **Natural language understanding** ("last month", "2 weeks ago", "February")
+- 🔗 **Context-aware conversations** (follow-up questions supported)
+- ⚡ **Multi-asset queries** (compare multiple cryptocurrencies)
+- 📈 **Normalized comparison charts** (relative performance indexed to 100)
+- 🧠 **AI-powered reasoning** using structured market data
+- 🧩 **Graceful handling of edge cases** (invalid ranges, unsupported queries)
+
+---
+
+## 🧠 What Makes It Interesting
+
+FinChat is not just a chatbot — it follows a **hybrid architecture**:
+
+- LLM is used for **understanding and explanation**
+- Backend logic handles **data fetching and calculations**
+
+This ensures:
+- ✔️ reliable outputs  
+- ✔️ no hallucinated price data  
+- ✔️ consistent behavior  
 
 ---
 
 ## 🏗️ Architecture
 
 ### Backend (FastAPI)
-- AI query planning layer
+
+- AI query planner (intent + parameters extraction)
 - Market data integration (CoinGecko API)
-- Timeframe normalization
-- Chart summarization logic
+- Timeframe normalization (with safe constraints)
+- Chart summarization
+- Multi-asset handling
+- Deterministic data pipeline
 
 ### Frontend (React + Vite)
-- Chat UI
-- Chart visualization
+
+- Chat-based UI
+- Multi-series chart rendering (Recharts)
+- Suggested prompts for feature discovery
 - Responsive layout
+- Local chat persistence
 
 ---
 
-## 🧠 How It Works
+## ⚙️ How It Works
 
 1. User sends a message  
 2. AI planner extracts:
    - intent  
-   - asset  
+   - asset(s)  
    - timeframe  
-3. Backend fetches:
-   - current price  
-   - historical chart data  
-4. Chart summary is generated  
-5. AI produces a final response using structured data  
+3. Backend:
+   - resolves assets  
+   - fetches market data  
+   - prepares structured context  
+4. AI generates a natural response using this data  
+
+👉 LLM never guesses prices — it only explains real data.
 
 ---
 
 ## 📊 Example Queries
 
-What is the current price of Bitcoin?
-How has it changed over the last week?
-Show me Ethereum performance in February
-What about last month?
-price of doge
+```txt
+Compare Bitcoin and Ethereum performance
+Which performed better: BTC or DOGE last 30 days?
+Show me Bitcoin trend over the last week
+If I invested $1000 in Bitcoin 2 months ago, what now?
+```
 
 ---
 
 ## 🧪 Demo Conversation
 
-User: What is the current price of BTC?
-AI: The current price of Bitcoin is $74,990 USD.
+User:
+> Compare Bitcoin and Dogecoin performance over the last 30 days
 
-User: How has it changed over the last 10 days?
-AI: Bitcoin increased by 8.31% over the last 10 days...
+FinChat:
+> Bitcoin increased by 9.56%, while Dogecoin increased by 11.11%.  
+> Dogecoin slightly outperformed Bitcoin over this period.
 
-User: What about ETH?
-AI: Ethereum increased by...
+📈 Includes a normalized comparison chart (relative performance indexed to 100)
+
+---
+
+## ⚠️ Limitations
+
+- Analysis is currently limited to recent market data (last 12 months)
+- External data depends on CoinGecko API availability
+- Multi-asset comparison is limited to a maximum of 5 assets
+
+---
+
+## 🎯 Design Decisions
+
+1. Historical data limited to 12 months for:
+   - API reliability
+   - performance consistency
+2. Asset limit (5) to:
+   - avoid UI overload
+   - keep responses clear
+3. Hybrid AI + backend approach to:
+   - prevent hallucinated data
+   - ensure deterministic outputs
 
 ---
 
@@ -145,24 +192,14 @@ You can directly interact with the application using the frontend, or test the b
 
 ---
 
-## ⚠️ Limitations
-
-- Historical analysis is currently limited to the most recent 365 days.
-- External market data depends on CoinGecko API availability and rate limits.
-- Multi-asset comparison support is currently partial and not fully charted side by side.
-
----
-
 ## 🔮 Future Improvements
 
-- Add structured logging and better observability across planner, market data, and response-generation layers.
-- Improve code documentation and docstring coverage in line with Python style and documentation guidelines.
-- Replace localStorage-based chat persistence with a user-based backend architecture backed by a database.
-- Further improve the planner layer so it can resolve more coin references and ambiguous follow-up questions more reliably.
-- Remove the current 365-day historical limit by supporting broader date ranges with stronger validation and provider-side optimizations.
-- Add richer chart interactions such as zooming, comparison views, and better timeframe controls.
-- Introduce stronger caching and fallback strategies for external market-data rate limits.
-- Improve asset disambiguation when multiple assets match the same user query.
+- Investment simulation (multi-asset portfolio support)
+- Extended historical data range
+- Persistent user accounts (database-backed)
+- Advanced chart interactions (zoom, overlays)
+- Improved asset disambiguation
+- Caching layer for performance
 
 ---
 
@@ -181,4 +218,4 @@ You can directly interact with the application using the frontend, or test the b
 
 ## 👨‍💻 Author
 
-Baran Örek
+ Baran Örek

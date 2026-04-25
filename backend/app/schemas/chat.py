@@ -16,9 +16,17 @@ class ChartPoint(BaseModel):
     price: float
 
 
+class ChartSeries(BaseModel):
+    asset_id: str
+    label: str
+    points: list[ChartPoint]
+
+
 class ChartData(BaseModel):
     label: str
-    points: List[ChartPoint]
+    points: list[ChartPoint] = []
+    series: list[ChartSeries] = []
+    is_normalized: bool = False
 
 
 class ChatResponse(BaseModel):
@@ -27,9 +35,10 @@ class ChatResponse(BaseModel):
 
 
 class PlannerOutput(BaseModel):
-    intent: Literal["finance_query", "casual", "unsupported"]
-    asset: Optional[str] = None
-    start_date: Optional[str] = None
-    end_date: Optional[str] = None
-    needs_current_price: bool
-    needs_chart: bool
+    intent: str
+    asset: str | None = None
+    related_assets: list[str] = []
+    start_date: str | None = None
+    end_date: str | None = None
+    needs_current_price: bool = False
+    needs_chart: bool = False
